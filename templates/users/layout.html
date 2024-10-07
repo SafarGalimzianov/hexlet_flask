@@ -4,6 +4,11 @@
         <title>{% block title%}Flask проект{% endblock %}</title>
 </head>
 <body>
+    <div id="header">
+        {% block header %}
+        <h1>Flask проект</h1>
+        {% endblock %}
+    </div>
     <div id='sidebar'>
         {% block sidebar %}
         <ul>
