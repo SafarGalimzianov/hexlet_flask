@@ -56,6 +56,7 @@ def validate(user: dict) -> dict:
 # Декоратор для обработки запроса GET на URL /
 @app.get('/')
 def home(): # Обработчик запроса. Название функции не имеет значения
+    repo.get_content()
     return render_template('users/home.html') #Отображение на странице текста без обработки
 
 
@@ -64,15 +65,9 @@ def home(): # Обработчик запроса. Название функци
 @app.get('/users')
 def users_get(): # Имена обработчиков принято называть по URL и методу или результату
     # Получение flash сообщений и указание их категорий
-    try:
-        messages = get_flashed_messages(with_categories=True)
-    except Exception as e:
-        abort(401)
+    messages = get_flashed_messages(with_categories=True)
     # Получение параметра поиска из строки запроса
-    try:
-        term = request.args.get('term')
-    except Exception as e:
-        abort(402)
+    term = request.args.get('term')
     # Получение пользователей из базы данных по поисковому запросу
     # Фильтрация реализована в методе get_users класса UserRepository
     # так как БД умеют фильтровать данные быстрее и эффективнее, чем Python
