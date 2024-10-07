@@ -4,6 +4,8 @@ class UserRepository:
     def __init__(self, conn, database_name='users'):
         self.conn = conn
         self.database_name = database_name
+        with self.conn.cursor() as cur:
+            cur.execute(f'CREATE TABLE IF NOT EXISTS {self.database_name} (id SERIAL PRIMARY KEY, name VARCHAR(255), email VARCHAR(255))')
 
     def get_content(self):
         with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
