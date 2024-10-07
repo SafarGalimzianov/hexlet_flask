@@ -23,3 +23,6 @@ run:
 
 run-dev:
 	poetry run flask --app main run --port $(PORT) --debug
+
+run-prod:
+	poetry run gunicorn --bind=localhost:$(PORT) main:app
