@@ -10,7 +10,7 @@ packages = [{include = "hexlet_flask"}]
 python = "^3.10"
 flask = "3.0"
 email-validator = "^1.1.3"
-psycopg2 = "^2.9.9"
+psycopg2 = { version = "^2.9.9", extras = ["binary"] }
 python-dotenv = "^1.0.1"
 gunicorn = "^23.0.0"
 
