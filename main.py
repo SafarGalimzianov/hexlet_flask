@@ -25,20 +25,15 @@ from dotenv import load_dotenv # Импорт функции для загруз
 app = Flask(__name__)
 
 # Настраиваем секретный ключ для подписи данных сессии
-try:
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-except Exception as e:
-    print('SECRET_KEY EXCEPTION: ', e)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 # Настраиваем URL базы данных для подключения
-app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
+app.config['DB_URL'] = os.getenv('DB_URL')
+app.config['DB_NAME'] = os.getenv('DB_NAME')
 
 # Создаем связь с баззой данных
-try:
-    conn = psycopg2.connect(app.config['DATABASE_URL'])
-except Exception as e:
-    print('DATABASE_URL EXCEPTION: ', e)
+conn = psycopg2.connect(app.config['DB_URL'])
 # Создаем таблицу в базе данных
-repo = UserRepository(conn)
+repo = UserRepository(conn, app.config['DB_NAME'])
 
 
 # Валидация пользователя

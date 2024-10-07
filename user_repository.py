@@ -1,28 +1,23 @@
 from psycopg2.extras import RealDictCursor
 
 class UserRepository:
-    def __init__(self, conn):
+    def __init__(self, conn, database_name='users'):
         self.conn = conn
+        self.database_name = database_name
 
     def get_content(self):
-        '''
-        Использование оператора with для создания курсора, который извлекает данные как словарь
-        курсор - это объект, который представляет результат запроса к базе данных
-        оператор with гарантирует, что курсор будет закрыт после выполнения блока кода даже если возникнет исключение
-        что гарантирует корректное (без непредвиденных изменений данных) закрытие соединения с базой данных
-        '''
         with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute('SELECT * FROM safar')
+            cur.execute(f'SELECT * FROM {self.database_name}')
             return cur.fetchall()
         
     def get_by_term(self, term=''):
         with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute('SELECT * FROM safar WHERE name ILIKE %s', (f'%{term}%',))
+            cur.execute(f'SELECT * FROM {self.database_name} WHERE name ILIKE %s', (f'%{term}%',))
             return cur.fetchall()
             
     def find(self, id):
         with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute('SELECT * FROM safar WHERE id = %s', (id,))
+            cur.execute(f'SELECT * FROM {self.database_name} WHERE id = %s', (id,))
             return cur.fetchone()
             
     def save(self, user):
@@ -34,19 +29,19 @@ class UserRepository:
         
     def _create(self, user):
         with self.conn.cursor() as cur:
-            cur.execute('INSERT INTO safar (name, email) VALUES (%s, %s) RETURNING id', (user['name'], user['email']))
+            cur.execute(f'INSERT INTO {self.database_name} (name, email) VALUES (%s, %s) RETURNING id', (user['name'], user['email']))
             user['id'] = cur.fetchone()[0]
         self.conn.commit()
         return user['id']
         
     def _update(self, user):
         with self.conn.cursor() as cur:
-            cur.execute('UPDATE safar SET name  = %s, email = %s RETURNING id', (user['name'], user['email']))
+            cur.execute(f'UPDATE {self.database_name} SET name = %s, email = %s WHERE id = %s RETURNING id', (user['name'], user['email'], user['id']))
             user['id'] = cur.fetchone()[0]
         self.conn.commit()
         return user['id']
         
     def delete(self, id):
         with self.conn.cursor() as cur:
-            cur.execute('DELETE FROM safar WHERE id = %s', (id,))
+            cur.execute(f'DELETE FROM {self.database_name} WHERE id = %s', (id,))
         self.conn.commit()
