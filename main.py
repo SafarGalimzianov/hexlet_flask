@@ -8,6 +8,7 @@ from flask import ( # Импорт модуля flask
     render_template, # Отображение шаблона
     request, # Получение данных ответа
     url_for, # Получение URL по названию обработчика запроса
+    abort, # Остановка выполнения запроса
 )
 
 from email_validator import validate_email, EmailNotValidError # Импорт функции валидации email
@@ -66,12 +67,12 @@ def users_get(): # Имена обработчиков принято назыв
     try:
         messages = get_flashed_messages(with_categories=True)
     except Exception as e:
-        messages = []
+        abort(404)
     # Получение параметра поиска из строки запроса
     try:
         term = request.args.get('term')
     except Exception as e:
-        term = None
+        abort(404)
     # Получение пользователей из базы данных по поисковому запросу
     # Фильтрация реализована в методе get_users класса UserRepository
     # так как БД умеют фильтровать данные быстрее и эффективнее, чем Python
@@ -81,7 +82,7 @@ def users_get(): # Имена обработчиков принято назыв
         else:
             users=repo.get_content()
     except Exception as e:
-        users = {'name': 'Error', 'email': 'Error'}
+        abort(404)
     # Отображение шаблона с пользователями
     return render_template(
         'users/index.html', #Путь к шаблону
