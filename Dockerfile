@@ -2,7 +2,7 @@
 FROM python:3.12-slim
 
 # Update the package list and install make and remove the package list (cached files created by apt-get update)
-RUN apt-get update && apt-get install -yq make && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -yq make build-essential gcc libpq-dev && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
 RUN pip install poetry
