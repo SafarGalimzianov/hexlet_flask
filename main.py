@@ -67,12 +67,12 @@ def users_get(): # Имена обработчиков принято назыв
     try:
         messages = get_flashed_messages(with_categories=True)
     except Exception as e:
-        abort(404)
+        abort(401)
     # Получение параметра поиска из строки запроса
     try:
         term = request.args.get('term')
     except Exception as e:
-        abort(404)
+        abort(402)
     # Получение пользователей из базы данных по поисковому запросу
     # Фильтрация реализована в методе get_users класса UserRepository
     # так как БД умеют фильтровать данные быстрее и эффективнее, чем Python
@@ -82,7 +82,7 @@ def users_get(): # Имена обработчиков принято назыв
         else:
             users=repo.get_content()
     except Exception as e:
-        abort(404)
+        abort(403)
     # Отображение шаблона с пользователями
     return render_template(
         'users/index.html', #Путь к шаблону
