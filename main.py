@@ -56,7 +56,6 @@ def validate(user: dict) -> dict:
 # Декоратор для обработки запроса GET на URL /
 @app.get('/')
 def home(): # Обработчик запроса. Название функции не имеет значения
-    repo.get_content()
     return render_template('users/home.html') #Отображение на странице текста без обработки
 
 
@@ -77,7 +76,10 @@ def users_get(): # Имена обработчиков принято назыв
         else:
             users=repo.get_content()
     except Exception as e:
-        abort(403)
+        return render_template(
+            'errors/500.html',
+            error=str(e),
+        ), 500
     # Отображение шаблона с пользователями
     return render_template(
         'users/index.html', #Путь к шаблону
