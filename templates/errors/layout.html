@@ -1,0 +1,8 @@
+<hr>
+{% if errors %}
+<ul class="flashes">
+    {% for key, error in errors.items() %}
+    <li class="error">{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}

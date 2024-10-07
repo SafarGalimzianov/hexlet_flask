@@ -1,0 +1,27 @@
+{% extends 'users/layout.html' %}
+
+{% block title %}Список пользователей{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+ <ul class=flashes>
+    {% for category, message in messages %}
+    <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+ </ul>
+ {% endif %}
+
+ <form action="{{ url_for('users_get')}}" method="get">
+    <input type="text" name="term" value="{{ search }}">
+    <input type="submit" value="Search">
+</form>
+
+<a href="{{ url_for('users_new')}}">Добавить пользователя</a>
+
+<ul>
+    {% for user in users %}
+    <li>Имя: <a href="{{ url_for('users_show', id=user.id)}}">{{ user.name }}></a>, Email: {{user.email}}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

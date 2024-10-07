@@ -1,0 +1,15 @@
+{% extends "users/layout.html" %}
+{% block title %}Редактирование пользователя{% endblock %}
+
+{% block content %}
+{% include "errors/layout.html"  %}
+<hr>
+<form action="{{ url_for('users_post') }}" method="post">
+    {% include "users/form.html" %}
+    <div>
+        <input type="submit" value="Добавить">
+    </div>
+</form>
+
+<p><a href="{{ url_for('users_get')}}">Назад к списку пользователей</a></p>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "users/layout.html" %}
+{% block title %}Редактирование пользователя{% endblock %}
+
+{% block content %}
+{% include "errors/layout.html" %}
+<hr>
+<form action="{{ url_for('users_patch', id=user.id) }}" method="post">
+    {% include "users/form.html" %}
+    <div>
+        <button type="submit" title="Submit">Обновить</button>
+    </div>
+</form>
+{% endblock %}
