@@ -29,4 +29,4 @@ ENV FLASK_RUN_HOST=0.0.0.0
 # Run the application
 # Remove --port=$PORT since Render assigns the port dynamically
 # If there is no need to handle a specific port, the port can be removed from the command
-CMD ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:${PORT}", "main:app"]
+CMD ["poetry", "run", "gunicorn", "main:app"]
