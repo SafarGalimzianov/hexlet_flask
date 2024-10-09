@@ -1,14 +1,14 @@
 <!-- Отображение пользователя -->
 <br>{% include "users/form.html" %}
 
-<h4><a href="{{ url_for('users_edit', id=user.id)}}">Редактировать пользователя</a>
+<h4><a href="{{ url_for('users_edit', id=user.id) }}">Редактировать пользователя</a>
 </h4>
 <!-- Форма удаления пользователя -->
-<form action="{{ url_for('users_delete', id=user.id)}}" method="post"
+<form action="{{ url_for('users_delete', id=user.id) }}" method="post"
 onsubmit="return confirm('Вы уверены, что хотите удалить пользователя? Это действие нельзя отменить');">
 <!-- title отображается при наведении курса на кнопку -->
  <!-- value значение самой кнопки -->
 <input type="submit" title="Это действие необратимо" value="Удалить пользователя"><br>
-<h4><a href="{{ url_for('users_get')}}">Вернуться к списку пользователей</a>
+<h4><a href="{{ url_for('users_get') }}">Вернуться к списку пользователей</a>
 </h4>
 </form>

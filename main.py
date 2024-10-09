@@ -29,12 +29,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 # Настраиваем URL базы данных для подключения
 app.config['DB_URL'] = os.getenv('DB_URL')
-app.config['DB_NAME'] = os.getenv('DB_NAME')
 
 # Создаем связь с баззой данных
 conn = psycopg2.connect(app.config['DB_URL'])
 # Создаем таблицу в базе данных
-repo = UserRepository(conn, app.config['DB_NAME'])
+repo = UserRepository(conn)
 
 
 # Валидация пользователя
@@ -70,16 +69,10 @@ def users_get(): # Имена обработчиков принято назыв
     # Получение пользователей из базы данных по поисковому запросу
     # Фильтрация реализована в методе get_users класса UserRepository
     # так как БД умеют фильтровать данные быстрее и эффективнее, чем Python
-    try:
-        if term:
-            users=repo.get_by_term(term)
-        else:
-            users=repo.get_content()
-    except Exception as e:
-        return render_template(
-            'errors/500.html',
-            error=str(e),
-        ), 500
+    if term:
+        users=repo.get_by_term(term)
+    else:
+        users=repo.get_content()
     # Отображение шаблона с пользователями
     return render_template(
         'users/index.html', #Путь к шаблону
@@ -109,7 +102,7 @@ def users_post():
     repo.save(user)
 
     # Отправка flash сообщения
-    flash('User added successfully', 'info')
+    flash(f'Пользователь {user["name"]} успешно добавлен', 'success')
 
     # Перенаправление на страницу с пользователями
     return redirect(url_for('users_get'), code=302)
@@ -155,13 +148,13 @@ def users_patch(id):
     if errors:
         return render_template(
             'users/edit.html',
-            user=user_to_update,
+            user=user,
             errors=errors,
         ), 422
     
     user['id'] = id
     repo.save(user)
-    flash('Пользователь успешно обновлен', 'success')
+    flash(f'Пользователь {user["name"]} успешно обновлен', 'success')
 
     return redirect(url_for('users_get'), code=302)
     
@@ -171,8 +164,9 @@ def users_patch(id):
 # Форма в users/edit.html содержит action={{ url_for('users_delete')}} и method='post'
 @app.post('/users/<int:id>/delete')
 def users_delete(id):
+    user = repo.find(id)
     repo.delete(id)
-    flash('User deleted successfully', 'success')
+    flash(f'Пользователь {user["name"]} успешно удален', 'success')
 
     return redirect(url_for('users_get'), code=302)
 

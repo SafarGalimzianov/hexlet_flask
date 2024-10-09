@@ -2,12 +2,12 @@
 <div>
     <label for="user-nickname">
         Имя:
-        <input type="text" id="user-nickname" name="name" value="{{ user.name }}">
+        <input type="text" id="user-nickname" name="name" value="{{ user.name|e }}">
     </label>
 </div>
 <div>
     <label for="user-email">
         Email:
-        <input type="text" id="user-email" name="email" value="{{ user.email }}">
+        <input type="text" id="user-email" name="email" value="{{ user.email|e }}">
     </label>
 </div>

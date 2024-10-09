@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
         <title>{% block title%}Flask проект{% endblock %}</title>
 </head>
@@ -9,7 +9,7 @@
         <h1>Flask проект</h1>
         {% endblock %}
     </div>
-    <div id='sidebar'>
+    <div id="sidebar">
         {% block sidebar %}
         <ul>
             <li><a href='{{ url_for("home") }}'>Главная</a></li>
@@ -17,7 +17,7 @@
         </ul>
         {% endblock %}
     </div>
-    <div id='content'>
+    <div id="content">
         {% block content %}{% endblock %}
     </div>
 </body>
